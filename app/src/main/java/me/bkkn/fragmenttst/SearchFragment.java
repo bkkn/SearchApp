@@ -34,6 +34,7 @@ public class SearchFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     final String KEY_RADIOBUTTON_INDEX = "SAVED_RADIO_BUTTON_INDEX";
+    final String KEY_TEXT = "SAVED_TEXT";
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
@@ -79,6 +80,7 @@ public class SearchFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_search, container, false);
         editText = view.findViewById(R.id.search_text);
+        LoadPreferences();
         button = view.findViewById(R.id.button);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -105,6 +107,7 @@ public class SearchFragment extends Fragment {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData(Uri.parse(url));
                 startActivity(intent);
+                SavePreferences(KEY_TEXT,keyword);
 
             }
         });
@@ -148,5 +151,21 @@ public class SearchFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    private void SavePreferences(String key, String value) {
+        SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences(
+                APP_PREFERENCES, MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(key, value);
+        editor.apply();
+    }
+
+    private void LoadPreferences() {
+        SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences(
+                APP_PREFERENCES, MODE_PRIVATE);
+        String savedText = sharedPreferences.getString(
+                KEY_TEXT, "");
+        editText.setText(savedText);
     }
 }
