@@ -12,12 +12,21 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity
         implements SettingsFragment.OnFragmentInteractionListener,
-        SearchFragment.OnFragmentInteractionListener{
+        SearchFragment.OnFragmentInteractionListener {
+
+    FragmentManager mFragmentManager = null;
+    Fragment mFragment = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        this.mFragmentManager = getSupportFragmentManager();
+        mFragment = mFragmentManager.findFragmentById(R.id.search_fragment);
+        if (mFragment == null)
+            mFragment = SearchFragment.newInstance();
+        mFragmentManager.beginTransaction().replace(R.id.container, mFragment).commit();
     }
 
     @Override
@@ -29,30 +38,24 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Fragment fragment = null;
+
 
         switch (item.getItemId()) {
 
 
             case R.id.settings:
-                //launch settings fragment
-
-                FragmentManager fragmentManager = getSupportFragmentManager();
-
-                fragment = fragmentManager.findFragmentById(R.id.settings_fragment);
-                if (fragment == null)
-                    fragment = SettingsFragment.newInstance();
-                fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+                mFragment = mFragmentManager.findFragmentById(R.id.settings_fragment);
+                if (mFragment == null)
+                    mFragment = SettingsFragment.newInstance();
+                mFragmentManager.beginTransaction().replace(R.id.container, mFragment).commit();
                 Toast.makeText(this, R.string.settings, Toast.LENGTH_SHORT).show();
                 break;
             case R.id.search:
-                //launch search fragment
-
-                fragmentManager = getSupportFragmentManager();
-                fragment = fragmentManager.findFragmentById(R.id.search_fragment);
-                if (fragment == null)
-                    fragment = SearchFragment.newInstance();
-                fragmentManager.beginTransaction().replace(R.id.container, fragment).commit();
+                mFragmentManager = getSupportFragmentManager();
+                mFragment = mFragmentManager.findFragmentById(R.id.search_fragment);
+                if (mFragment == null)
+                    mFragment = SearchFragment.newInstance();
+                mFragmentManager.beginTransaction().replace(R.id.container, mFragment).commit();
                 Toast.makeText(this, R.string.search, Toast.LENGTH_SHORT).show();
                 break;
             case R.id.quit:
