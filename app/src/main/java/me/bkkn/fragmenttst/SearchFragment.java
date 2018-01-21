@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RadioButton;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -52,7 +51,6 @@ public class SearchFragment extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-
      * @return A new instance of fragment SearchFragment.
      */
     // TODO: Rename and change types and number of parameters
@@ -107,7 +105,7 @@ public class SearchFragment extends Fragment {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData(Uri.parse(url));
                 startActivity(intent);
-                SavePreferences(KEY_TEXT,keyword);
+                SavePreferences(KEY_TEXT, keyword);
 
             }
         });
@@ -134,6 +132,7 @@ public class SearchFragment extends Fragment {
 
     @Override
     public void onDetach() {
+        SavePreferences(KEY_TEXT, editText.getText().toString());
         super.onDetach();
         mListener = null;
     }
